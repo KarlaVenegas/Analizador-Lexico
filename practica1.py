@@ -102,6 +102,55 @@ def automataComentarios(linea, cadena, ListaTokens):
         else:
             return 0
 
+def automataNumeros (linea,cadenas,ListaTokens)
+    alfa=["1","2","3","4","5","6","7","8","9"]
+    TC=["0",["1","2","3","4","5","6","7","8","9","0"],"15"],
+       ["15",["1","2","3","4","5","6","7","8","9","0"],"15"],
+       ["15",["."],"16"],
+       ["15",["E"],"16"],
+       ["16",["1","2","3","4","5","6","7","8","9","0"],"17"],
+       ["17",["1","2","3","4","5","6","7","8","9","0"],"17"],
+       ["17",["E"],"18"],
+       ["18",["+","-"],"19"],
+       ["18",["1","2","3","4","5","6","7","8","9","0"],"20"],
+       ["18",["1","2","3","4","5","6","7","8","9","0"],"20"],
+       ["20",["1","2","3","4","5","6","7","8","9","0"],"20"]
+    EI="0"
+    EA=EA
+    EF=["15","17","20"]
+    B=True
+    cont=0
+    lex=""
+
+    for caracter in cadena:
+        if caracter == " ":
+            cont = cont + 1
+        else:
+            if caracterin alfa:
+                if caracter == "+" or caracter == "-":
+                    if EA = 19:
+                        lex+lex+caracter
+                        cont=cont+1
+                        for f in TC:
+                            if caracter in f[2] adn EA in f[0]:
+                                TC.append([EA,caracter,f[2]])
+                                EA=f[2]
+                                breal
+                    else:
+                        if!="":
+                            ListaTokens.append("NUMBER")
+                            ListaTokens.append(lex)
+                            num=float(lex)
+                            ListaTokens.append(num)
+                            reconoceUnToken(linea,cadena[cont:lent(cadena)], ListaTokens)
+                            return 0
+                        else:
+                            reconoceUnToken(linea,cadena[cont:lent(cadena)], ListaTokens)
+                            return 0
+                else: #Continuamos mañana con el else del segundo if
+                
+        
+
 
 def main():
     ListaTokens=[]
@@ -147,5 +196,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-    print(Prueba GitHub)
