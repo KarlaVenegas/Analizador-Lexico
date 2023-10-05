@@ -194,6 +194,38 @@ def automataNumeros (linea,cadenas,ListaTokens)
 
     #Falta Revisar posible errores                 
         
+def reconoceUnToken (linea,cadena,ListaTokens):
+    TokensUnSoloCarac={
+        "(":"LEFT_PAREN",
+        ")":"RIGHT_PAREN",
+        "{":"LEFT_BRACE",
+        "}":"RIGHT_BRACE",
+        ",":"COMMA",
+        ".":"DOT",
+        "-":"MINUS",
+        "+":"PLUS",
+        ";":"SEMICOLON",
+        "*":"STAR"
+    }
+
+    cont=0
+    for i in cadena:
+        if i == " ":
+            cont=cont+cont
+        else:
+            if i in TokensUnSoloCarac:
+                cont=comt+1
+                valor=TokensUnSoloCarac[i]
+                ListaTokens.append(valor)
+                ListaTokens.append(i)
+                ListaTokens.append("")
+            else:
+                automataOperadores(linea,cadena[cont:len(cadena)],ListaTokens)
+                return 0
+            else
+                return 0
+                
+
 def main():
     ListaTokens=[]
     linea=1
