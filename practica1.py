@@ -147,11 +147,53 @@ def automataNumeros (linea,cadenas,ListaTokens)
                         else:
                             reconoceUnToken(linea,cadena[cont:lent(cadena)], ListaTokens)
                             return 0
-                else: #Continuamos mañana con el else del segundo if
-                
+                else:
+                    lex=lex+caracter
+                    cont=cont+1
+                    for f in TC:
+                        if caracter in f[1] and EA in f[0]:
+                            TC.append([EA,caracter,f[2]])
+                            EA=f[2]
+                            break
+
+        else: #POR SI NO ESTA EN EL ALFABETO
+            if EA in EI:
+                if lex != "":
+                    ListaTokens.append("NUMBER")
+                    ListaTokens.append(lex)
+                    num=float(lex) 
+                    ListaTokens.append(num)
+                    reconoceUnToken(linea,cadena[cont:len(cadena)],ListaTokens)
+                    return 0
+                else:
+                    reconoceUnToken(linea,cadena[cont:len(cadena)],ListaTokens)
+                    return 0
+            else: #Por si no encuentra ningun numero
+            if cadena [cont:len(cadena)]:
+                reconoceUnToken(linea,cadena[cont:len(cadena)],ListaTokens)
+                return 0
+            else:
+                return 0
+
+    if EA in EF:
+        ListaTokens.append ("NUMBER")
+        ListaTokens.append(lex)
+        num=float(lex)
+        ListaTokens.append(lex)
+        if cadena[cont:len(Cadena)]:
+            reconoceUnToken(linea,cadena[cont:len(cadena)],ListaTokens)
+        else: #CUANDO YA NO HAY CADENAS QUE LEER
+            return 0
+
+    else:
+        print(f"ERROR en linea{linea}")
+        if cadena[cont:len(cadena)]:
+            reconoceUnToken(linea,cadena[cont:len(cadena)],ListaTokens)
+        else:
+            return 0
+
+    #Falta Revisar posible errores                 
         
-
-
 def main():
     ListaTokens=[]
     linea=1
@@ -164,7 +206,7 @@ def main():
         with open(args.archivo, "r") as archivo:  #lee el archivo proporcionado
             lista_caracteres =[]
 
-            caracter = archivo.read(1)
+0            caracter = archivo.read(1)
             while caracter:
                 lista_caracteres.append(caracter)
                 caracter = archivo.read(1)
