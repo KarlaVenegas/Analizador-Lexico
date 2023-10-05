@@ -5,7 +5,7 @@ ListaTokens =[]
 def main():
     ListaTokens=[]
     linea=1
-    parser = argparse.ArgumentParser(description="Ejemplo p programa con interfaz de linea de comandos")
+    parser = argparse.ArgumentParser(description="Ejemplo o programa con interfaz de linea de comandos")
     parser.add_argument("archivo", nargs="?", help="Archivo (opcional) de entrada")
 
     args = parser.parse_args()
@@ -31,7 +31,7 @@ def main():
     else
         while True: #solicita las entradas repetidamente
             ListaTokens=[]
-            entrada = input("Cadena o enter para salir:") #borrar cuando termine de probarse
+            entrada = input("")
             l = 1
             if entrada:
                 s = automataComentarios(linea, entrada, ListaTokens)
