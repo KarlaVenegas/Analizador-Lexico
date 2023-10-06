@@ -224,12 +224,84 @@ def reconoceUnToken (linea,cadena,ListaTokens):
                 return 0
             else
                 return 0
-                
+
+#NOTA:  BORREN EL COMENTARIO YA QUE PONGAN SU AUTÓMATA
+
+#automata cadenas
+
+#esPalabra reservada
+
+#automata palabras reservadas
+def automataPalabrasReserv(linea, cadena, ListaTokens):
+    EI = '0'
+    EA = EI
+    lex = ''
+    cont = 0
+    for caracter in cadena
+        if caracter == ' ':
+            cont = cont + 1
+        else:
+            if EA == '0':
+                if caracter.isalpha():
+                    lex = lex + caracter
+                    cont = cont + 1
+                    EA = '13'
+                else:
+                    if cadena[cont:len(cadena)]:
+                        automataCadenas(linea, cadena[cont:len(cadena)], ListaTokens)
+                        return 0
+                    else:
+                        return 0
+            else:
+                if EA == '13':
+                    if caracter.isalpha() or caracter.isdigit():
+                        cont = cont + 1
+                        lex = lex + caracter
+                    else:
+                        if EsPaRes(lex):
+                            ListaTokens.append(lex.upper())
+                            ListaTokens.append(lex)
+                            ListaTokens.append('')
+                        else:
+                            ListaTokens.append('IDENTIFIER')
+                            ListaTokens.append(lex)
+                            ListaTokens.append('')
+
+                        if cadena[cont:len(cadena)]:
+                            automataCadenas(linea, cadena[cont:len(cadena)], ListaTokens)
+                            return 0
+                        else:
+                            return 0
+
+    if EA == '13':
+        if lex != '':
+            if EsPaRes(lex):
+                ListaTokens.append(lex.upper())
+                ListaTokens.append(lex)
+                ListaTokens.append('')
+            else:
+                ListaTokens.append('IDENTIFIER')
+                ListaTokens.append(lex)
+                ListaTokens.append('')
+        if cadena[cont:len(cadena)]:
+            automataCadenas(linea, cadena[cont:len(cadena)], ListaTokens)
+            return 0
+        else:
+            return 0
+
+
+#automata operadores
+
+#reconoce token (moverlo aqui)
+
+#automata numeros (moverlo aqui)
+
+#automata comentarios (moverlo aqui)
 
 def main():
     ListaTokens=[]
     linea=1
-    parser = argparse.ArgumentParser(description="Ejemplo o programa con interfaz de linea de comandos")
+    parser = argparse.ArgumentParser(description="")
     parser.add_argument("archivo", nargs="?", help="Archivo (opcional) de entrada")
 
     args = parser.parse_args()
