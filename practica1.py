@@ -132,15 +132,32 @@ def reconoceUnToken (linea,cadena,ListaTokens):
 
 #esPalabra reservada
 
-#automata palabras reservadas
+
 def automataPalabrasReserv(linea, cadena, ListaTokens):
     EI = '0'
     EA = EI
     lex = ''
     cont = 0
+    No = ['#', '&', '$']
+
     for caracter in cadena
         if caracter == ' ':
             cont = cont + 1
+            if lex != '':
+                if EsPaRes(lex):
+                    ListaTokens.append(lex.upper())
+                    ListaTokens.append(lex)
+                    ListaTokens.append('')
+                else:
+                    ListaTokens.append('IDENTIFIER')
+                    ListaTokens.append(lex)
+                    ListaTokens.append('')
+                if cadena[cont:len(cadena)]:
+                    automataCadenas(linea, cadena[cont:len(cadena)], ListaTokens)
+                    return 0
+                else:
+                    return 0
+
         else:
             if EA == '0':
                 if caracter.isalpha():
