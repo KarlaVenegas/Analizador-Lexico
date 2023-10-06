@@ -297,7 +297,7 @@ def automataPalabrasReserv(linea, cadena, ListaTokens):
 #automata numeros (moverlo aqui)
 
 #automata comentarios (moverlo aqui)
-#revisar cuando esta en el estado
+#revisar cuando esta en el estadoo
 def main():
     ListaTokens=[]
     linea=1
