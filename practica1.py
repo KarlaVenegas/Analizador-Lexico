@@ -270,7 +270,68 @@ def automataOperadores(linea, cadena, ListaTokens):
                                                     return 0
 
 
-    
+    if EA in EF:
+        if cadena[cont:len(cadena)]:
+            automataPalabrasReserv(linea, cadena[cont:len(cadena)], ListaTokens)
+            return 0
+        else:
+            return 0
+        #revisar cuando este en los estados finales
+        if EA == '2':
+            ListaTokens.append('GREATER_EQUAL')
+            ListaTokens.append(lex)
+            ListaTokens('')
+        else:
+            if EA=='5':
+                ListaTokens.append('LESS_EQUAL')
+                ListaTokens.append(lex)
+                ListaTokens.append('')
+            else:
+                if EA == '8':
+                    ListaTokens.append('EQUAL_EQUAL')
+                    ListaTokens.append(lex)
+                    ListaTokens.append('')
+                else:
+                    if EA == '11':
+                        ListaTokens.append('BANG_EQUAL')
+                        ListaTokens.append(lex)
+                        ListaTokens.append('')
+                    else:
+                        if EA == '5':
+                            ListaTokens.append('LESS_EQUAL')
+                            ListaTokens.append(lex)
+                            ListaTokens.append('')
+                            automataPalabrasReserv(linea, cadena[cont:len(cadena)], ListaTokens)
+                            return 0
+                        else:
+                            if EA == '8':
+                                ListaTokens.append('EQUAL_EQUAL')
+                                ListaTokens.append(lex)
+                                ListaTokens.append('')
+                                automataPalabrasReserv(linea, cadena[cont:len(cadena)], ListaTokens)
+                                return 0
+                            else:
+                                if EA == '4':
+                                    ListaTokens.append('LESS')
+                                    ListaTokens.append(lex)
+                                    ListaTokens.append('')
+                                else:
+                                    ListaTokens.append('BANG')
+                                    ListaTokens.append(lex)
+                                    ListaTokens.append('')
+
+        if cadena[cont:len(cadena)]:
+            automataPalabrasReserv(linea, cadena[cont:len(cadena)], ListaTokens)
+            return 0
+        else:
+            return 0
+
+    else:
+        if cadena[cont:len(cadena)]:
+            automataPalabrasReserv(linea, cadena[cont:len(cadena)], ListaTokens)
+            return 0
+        else:
+            return 0
 
 #reconoce token (moverlo aqui)
 
