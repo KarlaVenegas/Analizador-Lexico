@@ -159,37 +159,46 @@ def automataPalabrasReserv(linea, cadena, ListaTokens):
                     return 0
 
         else:
-            if EA == '0':
-                if caracter.isalpha():
-                    lex = lex + caracter
-                    cont = cont + 1
-                    EA = '13'
+            if caracter in No:
+                print(f'ERROR en linea {linea}')
+                cont = cont + 1
+                if cadena[cont:len(cadena)]:
+                    automataCadenas(linea, cadena[cont:len(cadena)], ListaTokens)
+                    return 0
                 else:
-                    if cadena[cont:len(cadena)]:
-                        automataCadenas(linea, cadena[cont:len(cadena)], ListaTokens)
-                        return 0
-                    else:
-                        return 0
+                    return 0
             else:
-                if EA == '13':
-                    if caracter.isalpha() or caracter.isdigit():
-                        cont = cont + 1
+                if EA == '0':
+                    if caracter.isalpha():
                         lex = lex + caracter
+                        cont = cont + 1
+                        EA = '13'
                     else:
-                        if EsPaRes(lex):
-                            ListaTokens.append(lex.upper())
-                            ListaTokens.append(lex)
-                            ListaTokens.append('')
-                        else:
-                            ListaTokens.append('IDENTIFIER')
-                            ListaTokens.append(lex)
-                            ListaTokens.append('')
-
                         if cadena[cont:len(cadena)]:
                             automataCadenas(linea, cadena[cont:len(cadena)], ListaTokens)
                             return 0
                         else:
                             return 0
+                else:
+                    if EA == '13':
+                        if caracter.isalpha() or caracter.isdigit():
+                            cont = cont + 1
+                            lex = lex + caracter
+                        else:
+                            if EsPaRes(lex):
+                                ListaTokens.append(lex.upper())
+                                ListaTokens.append(lex)
+                                ListaTokens.append('')
+                            else:
+                                ListaTokens.append('IDENTIFIER')
+                                ListaTokens.append(lex)
+                                ListaTokens.append('')
+
+                            if cadena[cont:len(cadena)]:
+                                automataCadenas(linea, cadena[cont:len(cadena)], ListaTokens)
+                                return 0
+                            else:
+                                return 0
 
     if EA == '13':
         if lex != '':
