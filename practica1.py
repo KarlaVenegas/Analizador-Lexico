@@ -1,106 +1,7 @@
 import argparse
 ListaTokens =[]
 
-def automataComentarios(linea, cadena, ListaTokens):
-    alfa = ['/', '*', '\n']
-    TC = [['0', ['/'], '26'],
-          ['0', ['\n'], '0'],
-          ['26', ['*'], '27'],
-          ['27', ['*'], '28'],
-          ['28', ['*'], '28'],
-          ['28', ['/'], '29'],
-          ['26', ['/'], '30'],
-          ['30', ['\n'], '31'],
-          ['29', ['\n'], '0']
-          ]
-    EI = '0'
-    EA = EI
-    EF = ['29', '31', '30', '26', '0']
-    bandera = True
-    cont = 0
-    lex = ''
 
-    for caracter in cadena:
-        if cadena != '':
-            if caracter == ' ':
-                cont = cont + 1
-            else:
-                if caracter in alfa:
-                    if caracter == '\n':
-                        linea = linea + 1
-                        cont = cont + 1
-
-                        if EA == '0':
-                            automataComentarios(linea, cadena[cont:len(cadena)], ListaTokens)
-                            return 0
-                        else:
-                            for f in TC:
-                                if caracter in f[1] and (EA in f[0]):
-                                    EA = f[2]
-                                    break
-
-                    else:
-                        cont = cont + 1
-                        for f in TC:
-                            if caracter in f[1] and (EA in f[0]):
-                                EA = f[2]
-                                break
-
-                else:
-                    if EA == '27':
-                        cont = cont + 1
-                    else:
-                        if EA == '28':
-                            EA = '27'
-                            cont = cont + 1
-                        else:
-                            if EA == '30':
-                                cont = cont + 1
-                            else:
-                                if EA == '26':
-                                    ListaTokens.append('SLASH')
-                                    ListaTokens.append('/')
-                                    ListaTokens.append('')
-                                    if cadena[cont:len(cadena)]:
-                                       automataNumeros(linea, cadena[cont:len(cadena)], ListaTokens)
-                                       return 0
-                                    else:
-                                        return 0
-                                else:
-                                    if cadena[cont:len(cadena)]:
-                                        automataNumeros(linea, cadena[cont:len(cadena)], ListaTokens)
-                                        return 0
-                                    else:
-                                        return 0
-
-        else:
-            return 0
-
-    if EA in EF and (bandera == True):
-        print(EA)
-        if EA == '27':
-            ListaTokens.append('SLASH')
-            ListaTokens.append('/')
-            ListaTokens.append('')
-            if cadena[cont:len(cadena)]:
-                automataNumeros(linea, cadena[cont:len(cadena)], ListaTokens)
-                return 0
-            else:
-                return 0
-        else:
-            if cadena[cont:len(cadena)]:
-                automataNumeros(linea, cadena[cont:len(cadena)], ListaTokens)
-                return 0
-            else:
-                return 0
-
-    else:
-        print(f'Error en linea: {linea}')
-        if cadena[cont:len(cadena)]:
-            automataNumeros(linea, cadena[cont:len(cadena)], ListaTokens)
-            return 0
-        else:
-            return 0
 
 def automataNumeros (linea,cadenas,ListaTokens)
     alfa=["1","2","3","4","5","6","7","8","9"]
@@ -290,14 +191,197 @@ def automataPalabrasReserv(linea, cadena, ListaTokens):
             return 0
 
 
-#automata operadores
+def automataOperadores(linea, cadena, ListaTokens):
+    alfa = ['>', '<', '=', '!']
+    TC = [['0', ['>'], '1'],
+             ['1', ['='], '2'],
+             ['0', ['<'], '4'],
+             ['4', ['='], '5'],
+             ['0', ['='], '7'],
+             ['7', ['='], '8'],
+             ['0', ['!'], '10'],
+             ['10', ['='], '11']]
+    b = True
+    EI = '0'
+    EA = EI
+    EF = ['2', '8', '11', '5', '1', '7', '4', '10']
+    cont = 0
+    lex = ''
+
+    for caracter in cadena:
+        if caracter == ' ':
+            cont = cont + 1
+        else:
+            if caracter in alfa:
+                cont = cont + 1
+                lex = lex + caracter
+                for f in TC:
+                    if caracter in f[1] and EA in f[0]:
+                        TC.append([EA, caracter, f[2]])
+                        EA = f[2]
+                        break
+            else: #Analizamos que pasa si recibe algo que no está en el alfabeto
+                if EA == '1':
+                    ListaTokens.append('GREATER')
+                    ListaTokens.append(lex)
+                    ListaTokens.append('')
+                    automataPalabrasReserv(linea, cadena[cont:len(cadena)], ListaTokens)
+                    return 0
+                else:
+                            if EA == '10':
+                                ListaTokens.append('BANG')
+                                ListaTokens.append(lex)
+                                ListaTokens.append('')
+                                automataPalabrasReserv(linea, cadena[cont:len(cadena)], ListaTokens)
+                                return 0
+                            else:
+                                if EA == '2':
+                                    ListaTokens.append('GREATER_EQUAL')
+                                    ListaTokens.append(lex)
+                                    ListaTokens.append('')
+                                    automataPalabrasReserv(linea, cadena[cont:len(cadena)], ListaTokens)
+                                    return 0
+                                else:
+                                    if EA == '5':
+                                        ListaTokens.append('LESS_EQUAL')
+                                        ListaTokens.append(lex)
+                                        ListaTokens.append('')
+                                        automataPalabrasReserv(linea, cadena[cont:len(cadena)], ListaTokens)
+                                        return 0
+                                    else:
+                                        if EA == '8':
+                                            ListaTokens.append('EQUAL_EQUAL')
+                                            ListaTokens.append(lex)
+                                            ListaTokens.append('')
+                                            automataPalabrasReserv(linea, cadena[cont:len(cadena)], ListaTokens)
+                                            return 0
+                                        else:
+                                            if EA == '11':
+                                                ListaTokens.append('BANG_EQUAL')
+                                                ListaTokens.append(lex)
+                                                ListaTokens.append('')
+                                                automataPalabrasReserv(linea, cadena[cont:len(cadena)], ListaTokens)
+                                                return 0
+                                            else:
+                                                if cadena[cont:len(cadena)]:
+                                                    automataPalabrasReserv(linea, cadena[cont:len(cadena)], ListaTokens)
+                                                    return 0
+                                                else:
+                                                    return 0
+
+
+    
 
 #reconoce token (moverlo aqui)
 
 #automata numeros (moverlo aqui)
 
-#automata comentarios (moverlo aqui)
-#revisar cuando esta en el s
+def automataComentarios(linea, cadena, ListaTokens):
+    alfa = ['/', '*', '\n']
+    TC = [['0', ['/'], '26'],
+          ['0', ['\n'], '0'],
+          ['26', ['*'], '27'],
+          ['27', ['*'], '28'],
+          ['28', ['*'], '28'],
+          ['28', ['/'], '29'],
+          ['26', ['/'], '30'],
+          ['30', ['\n'], '0'],
+          ['29', ['\n'], '0']
+          ]
+    EI = '0'
+    EA = EI
+    EF = ['29', '31', '30', '26', '0']
+    cont = 0
+    lex = ''
+
+    for caracter in cadena:
+        if cadena != '':
+            if caracter == ' ':
+                cont = cont + 1
+            else:
+                if caracter == '*' and EA == '0':
+                    if cadena[cont:len(cadena)]:
+                        automataNumeros(linea, cadena[cont:len(cadena)], ListaTokens)
+                        return 0
+                    else:
+                        return 0
+                else:
+                    if caracter in alfa:
+                        if caracter == '\n':
+                            linea = linea + 1
+                            cont = cont + 1
+
+                            if EA == '0':
+                                automataComentarios(linea, cadena[cont:len(cadena)], ListaTokens)
+                                return 0
+                            else:
+                                for f in TC:
+                                    if caracter in f[1] and (EA in f[0]):
+                                        EA = f[2]
+                                        break
+
+                        else:
+                            cont = cont + 1
+                            for f in TC:
+                                if caracter in f[1] and (EA in f[0]):
+                                    EA = f[2]
+                                    break
+
+                    else:
+                        if EA == '27':
+                            cont = cont + 1
+                        else:
+                            if EA == '28':
+                                EA = '27'
+                                cont = cont + 1
+                            else:
+                                if EA == '30':
+                                    cont = cont + 1
+                                else:
+                                    if EA == '26':
+                                        ListaTokens.append('SLASH')
+                                        ListaTokens.append('/')
+                                        ListaTokens.append('')
+                                        if cadena[cont:len(cadena)]:
+                                           automataNumeros(linea, cadena[cont:len(cadena)], ListaTokens)
+                                           return 0
+                                        else:
+                                            return 0
+                                    else:
+                                        if cadena[cont:len(cadena)]:
+                                            automataNumeros(linea, cadena[cont:len(cadena)], ListaTokens)
+                                            return 0
+                                        else:
+                                            return 0
+
+        else:
+            return 0
+
+    if EA in EF:
+        print(EA)
+        if EA == '27':
+            ListaTokens.append('SLASH')
+            ListaTokens.append('/')
+            ListaTokens.append('')
+            if cadena[cont:len(cadena)]:
+                automataNumeros(linea, cadena[cont:len(cadena)], ListaTokens)
+                return 0
+            else:
+                return 0
+        else:
+            if cadena[cont:len(cadena)]:
+                automataNumeros(linea, cadena[cont:len(cadena)], ListaTokens)
+                return 0
+            else:
+                return 0
+
+    else:
+        print(f'Error en linea: {linea}')
+        if cadena[cont:len(cadena)]:
+            automataNumeros(linea, cadena[cont:len(cadena)], ListaTokens)
+            return 0
+        else:
+            return 0
 def main():
     ListaTokens=[]
     linea=1
