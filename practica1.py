@@ -68,7 +68,12 @@ def automataCadenas(linea , cadena, ListaTokens):
 
 
 #esPalReservada
-
+def esPaRes(cadena):
+    palabrasReserv=["and","else","false","fun","for","if","null","or","print","return","true","var","while"]
+    if cadena in palabrasReserv:
+        return True
+    else:
+        retunr False
 
 
 def automataPalabrasReserv(linea, cadena, ListaTokens):
