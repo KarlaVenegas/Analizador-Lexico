@@ -1,4 +1,5 @@
 import argparse
+from calendar import c
 ListaTokens =[]
 
 def automataCadenas(linea , cadena, ListaTokens):
@@ -323,7 +324,7 @@ def reconoceUnToken (linea,cadena,ListaTokens):
     cont=0
     for i in cadena:
         if i == " ":
-            cont=cont+cont
+            cont= cont + 1
         else:
             if i in TokensUnSoloCarac:
                 cont=cont+1
@@ -334,12 +335,16 @@ def reconoceUnToken (linea,cadena,ListaTokens):
             else:
                 automataOperadores(linea,cadena[cont:len(cadena)],ListaTokens)
                 return 0
+            
+    if cadena[cont:len(cadena)]:
+        automataOperadores(linea,cadena[cont:len(cadena)],ListaTokens)
+        return 0
     else:
-                return 0
+        return 0
 
 
 
-def automataNumeros (linea,cadenas,ListaTokens):
+def automataNumeros (linea,cadena,ListaTokens):
     alfa=["1","2","3","4","5","6","7","8","9"]
     TC=["0",["1","2","3","4","5","6","7","8","9","0"],"15"],
     ["15",["1","2","3","4","5","6","7","8","9","0"],"15"],
@@ -359,7 +364,7 @@ def automataNumeros (linea,cadenas,ListaTokens):
     cont=0
     lex=""
 
-    for caracter in cadenas:
+    for caracter in cadena:
         if caracter == " ":
             cont = cont + 1
         else:
@@ -379,10 +384,10 @@ def automataNumeros (linea,cadenas,ListaTokens):
                             ListaTokens.append(lex)
                             num=float(lex)
                             ListaTokens.append(num)
-                            reconoceUnToken(linea,cadena[cont:lent(cadena)], ListaTokens)
+                            reconoceUnToken(linea,cadena[cont:len(cadena)], ListaTokens)
                             return 0
                         else:
-                            reconoceUnToken(linea,cadena[cont:lent(cadena)], ListaTokens)
+                            reconoceUnToken(linea,cadena[cont:len(cadena)], ListaTokens)
                             return 0
                 else:
                     lex=lex+caracter
@@ -393,31 +398,31 @@ def automataNumeros (linea,cadenas,ListaTokens):
                             EA=f[2]
                             break
 
-        else: #POR SI NO ESTA EN EL ALFABETO
-            if EA in EI:
-                if lex != "":
-                    ListaTokens.append("NUMBER")
-                    ListaTokens.append(lex)
-                    num=float(lex) 
-                    ListaTokens.append(num)
-                    reconoceUnToken(linea,cadena[cont:len(cadena)],ListaTokens)
-                    return 0
-                else:
-                    reconoceUnToken(linea,cadena[cont:len(cadena)],ListaTokens)
-                    return 0
-            else: #Por si no encuentra ningun numero
-            if cadena [cont:len(cadena)]:
-                reconoceUnToken(linea,cadena[cont:len(cadena)],ListaTokens)
-                return 0
-            else:
-                return 0
+            else: #POR SI NO ESTA EN EL ALFABETO
+                if EA in EF:
+                    if lex != "":
+                        ListaTokens.append("NUMBER")
+                        ListaTokens.append(lex)
+                        num=float(lex) 
+                        ListaTokens.append(num)
+                        reconoceUnToken(linea,cadena[cont:len(cadena)],ListaTokens)
+                        return 0
+                    else:
+                        reconoceUnToken(linea,cadena[cont:len(cadena)],ListaTokens)
+                        return 0
+                else: #Por si no encuentra ningun numero
+                    if cadena [cont:len(cadena)]:
+                        reconoceUnToken(linea,cadena[cont:len(cadena)],ListaTokens)
+                        return 0
+                    else:
+                        return 0
 
     if EA in EF:
         ListaTokens.append ("NUMBER")
         ListaTokens.append(lex)
         num=float(lex)
-        ListaTokens.append(lex)
-        if cadena[cont:len(Cadena)]:
+        ListaTokens.append(num)
+        if cadena[cont:len(cadena)]:
             reconoceUnToken(linea,cadena[cont:len(cadena)],ListaTokens)
         else: #CUANDO YA NO HAY CADENAS QUE LEER
             return 0
@@ -429,7 +434,7 @@ def automataNumeros (linea,cadenas,ListaTokens):
         else:
             return 0
 
-    #Falta Revisar posible errores                 
+                 
 
 
 def automataComentarios(linea, cadena, ListaTokens):
