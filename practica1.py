@@ -94,43 +94,75 @@ def automataNumeros (linea,cadenas,ListaTokens)
             return 0
 
     #Falta Revisar posible errores                 
-        
-def reconoceUnToken (linea,cadena,ListaTokens):
-    TokensUnSoloCarac={
-        "(":"LEFT_PAREN",
-        ")":"RIGHT_PAREN",
-        "{":"LEFT_BRACE",
-        "}":"RIGHT_BRACE",
-        ",":"COMMA",
-        ".":"DOT",
-        "-":"MINUS",
-        "+":"PLUS",
-        ";":"SEMICOLON",
-        "*":"STAR"
-    }
 
+def automataCadenas(linea , cadena, ListaTokens):
+    EA='0'
+    EI = EA
     cont=0
-    for i in cadena:
-        if i == " ":
-            cont=cont+cont
+    lex = ''
+
+    for caracter in cadena:
+        if caracter == ' ':
+            cont = cont + 1
         else:
-            if i in TokensUnSoloCarac:
-                cont=comt+1
-                valor=TokensUnSoloCarac[i]
-                ListaTokens.append(valor)
-                ListaTokens.append(i)
-                ListaTokens.append("")
+            if EA == '0':
+                if caracter == '"':
+                    EA = '24'
+                    cont = cont + 1
+                    lex = lex + caracter
+                else:
+                    if cadena[cont:len(cadena)]:
+                        automataComenatiros(linea, cadena[cont:len(cadena)], ListaTokens)
+                        return 0
+                    else:
+                        return 0
             else:
-                automataOperadores(linea,cadena[cont:len(cadena)],ListaTokens)
-                return 0
-            else
-                return 0
+                if EA == '24':
+                    if caracter == '\n':
+                        cont = cont + 1
+                        print(f'ERROR en linea {linea}')
+                        if cadena[cont:len(cadena)]:
+                            automataComenatiros(linea, cadena[cont:len(cadena)], ListaTokens)
+                            return 0
+                        else:
+                            return 0
+                    else:
+                        if caracter == '"':
+                            cont = cont + 1
+                            lex = lex + caracter
+                            EA = '25'
+                        else:
+                            lex = lex + caracter
+                            cont = cont + 1
+                else:
+                    if lex != '':
+                        ListaTokens.append('STRING')
+                        ListaTokens.append(lex)
+                        ListaTokens.append(lex)
 
-#NOTA:  BORREN EL COMENTARIO YA QUE PONGAN SU AUTÓMATA
+                    if cadena[cont:len(cadena)]:
+                        automataComenatiros(linea, cadena[cont:len(cadena)], ListaTokens)
+                        return 0
+                    else:
+                        return 0
 
-#automata cadenas
 
-#esPalabra reservada
+    if EA == '25':
+        if lex != '':
+            ListaTokens.append('STRING')
+            ListaTokens.append(lex)
+            ListaTokens.append(lex)
+
+        if cadena[cont:len(cadena)]:
+            automataComenatiros(linea, cadena[cont:len(cadena)], ListaTokens)
+            return 0
+        else:
+            return 0
+
+
+
+
+#esPalReservada
 
 
 def automataPalabrasReserv(linea, cadena, ListaTokens):
@@ -363,9 +395,44 @@ def automataOperadores(linea, cadena, ListaTokens):
         else:
             return 0
 
-#reconoce token (moverlo aqui)
+def reconoceUnToken (linea,cadena,ListaTokens):
+    TokensUnSoloCarac={
+        "(":"LEFT_PAREN",
+        ")":"RIGHT_PAREN",
+        "{":"LEFT_BRACE",
+        "}":"RIGHT_BRACE",
+        ",":"COMMA",
+        ".":"DOT",
+        "-":"MINUS",
+        "+":"PLUS",
+        ";":"SEMICOLON",
+        "*":"STAR"
+    }
+
+    cont=0
+    for i in cadena:
+        if i == " ":
+            cont=cont+cont
+        else:
+            if i in TokensUnSoloCarac:
+                cont=comt+1
+                valor=TokensUnSoloCarac[i]
+                ListaTokens.append(valor)
+                ListaTokens.append(i)
+                ListaTokens.append("")
+            else:
+                automataOperadores(linea,cadena[cont:len(cadena)],ListaTokens)
+                return 0
+            else
+                return 0
+
+
+
 
 #automata numeros (moverlo aqui)
+
+
+
 
 def automataComentarios(linea, cadena, ListaTokens):
     alfa = ['/', '*', '\n']
@@ -485,7 +552,7 @@ def main():
         with open(args.archivo, "r") as archivo:  #lee el archivo proporcionado
             lista_caracteres =[]
 
-0            caracter = archivo.read(1)
+            caracter = archivo.read(1)
             while caracter:
                 lista_caracteres.append(caracter)
                 caracter = archivo.read(1)
