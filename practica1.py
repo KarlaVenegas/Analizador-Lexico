@@ -103,16 +103,16 @@ def automataCadenas(linea , cadena, ListaTokens):
 
     for caracter in cadena:
         if caracter == ' ':
+            lex = lex + caracter
             cont = cont + 1
         else:
             if EA == '0':
                 if caracter == '"':
                     EA = '24'
                     cont = cont + 1
-                    lex = lex + caracter
                 else:
                     if cadena[cont:len(cadena)]:
-                        automataComenatiros(linea, cadena[cont:len(cadena)], ListaTokens)
+                        automataComentarios(linea, cadena[cont:len(cadena)], ListaTokens)
                         return 0
                     else:
                         return 0
@@ -122,14 +122,13 @@ def automataCadenas(linea , cadena, ListaTokens):
                         cont = cont + 1
                         print(f'ERROR en linea {linea}')
                         if cadena[cont:len(cadena)]:
-                            automataComenatiros(linea, cadena[cont:len(cadena)], ListaTokens)
+                            automataComentarios(linea, cadena[cont:len(cadena)], ListaTokens)
                             return 0
                         else:
                             return 0
                     else:
                         if caracter == '"':
                             cont = cont + 1
-                            lex = lex + caracter
                             EA = '25'
                         else:
                             lex = lex + caracter
@@ -141,7 +140,7 @@ def automataCadenas(linea , cadena, ListaTokens):
                         ListaTokens.append(lex)
 
                     if cadena[cont:len(cadena)]:
-                        automataComenatiros(linea, cadena[cont:len(cadena)], ListaTokens)
+                        automataComentarios(linea, cadena[cont:len(cadena)], ListaTokens)
                         return 0
                     else:
                         return 0
@@ -154,7 +153,7 @@ def automataCadenas(linea , cadena, ListaTokens):
             ListaTokens.append(lex)
 
         if cadena[cont:len(cadena)]:
-            automataComenatiros(linea, cadena[cont:len(cadena)], ListaTokens)
+            automataComentarios(linea, cadena[cont:len(cadena)], ListaTokens)
             return 0
         else:
             return 0
