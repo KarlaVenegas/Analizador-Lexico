@@ -227,7 +227,6 @@ def automataOperadores(linea, cadena, ListaTokens):
              ['7', ['='], '8'],
              ['0', ['!'], '10'],
              ['10', ['='], '11']]
-    b = True
     EI = '0'
     EA = EI
     EF = ['2', '8', '11', '5', '1', '7', '4', '10']
@@ -468,7 +467,7 @@ def automataComentarios(linea, cadena, ListaTokens):
                 return 0
 
     else:
-        print(f'Error en linea: {linea}')
+        print(f'Error en linea: {linea} (Error de comentario)')
         if cadena[cont:len(cadena)]:
             automataNumeros(linea, cadena[cont:len(cadena)], ListaTokens)
             return 0
