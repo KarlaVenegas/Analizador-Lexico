@@ -1,5 +1,6 @@
 import argparse
 from calendar import c
+from math import e
 ListaTokens =[]
 
 def automataCadenas(linea , cadena, ListaTokens):
@@ -84,11 +85,11 @@ def automataPalabrasReserv(linea, cadena, ListaTokens):
     cont = 0
     No = ['#', '&', '$']
 
-    for caracter in cadena
+    for caracter in cadena:
         if caracter == ' ':
             cont = cont + 1
             if lex != '':
-                if EsPaRes(lex):
+                if esPaRes(lex):
                     ListaTokens.append(lex.upper())
                     ListaTokens.append(lex)
                     ListaTokens.append('')
@@ -129,7 +130,7 @@ def automataPalabrasReserv(linea, cadena, ListaTokens):
                             cont = cont + 1
                             lex = lex + caracter
                         else:
-                            if EsPaRes(lex):
+                            if esPaRes(lex):
                                 ListaTokens.append(lex.upper())
                                 ListaTokens.append(lex)
                                 ListaTokens.append('')
@@ -146,7 +147,7 @@ def automataPalabrasReserv(linea, cadena, ListaTokens):
 
     if EA == '13':
         if lex != '':
-            if EsPaRes(lex):
+            if esPaRes(lex):
                 ListaTokens.append(lex.upper())
                 ListaTokens.append(lex)
                 ListaTokens.append('')
