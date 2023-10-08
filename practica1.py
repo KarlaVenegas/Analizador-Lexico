@@ -309,6 +309,7 @@ def automataOperadores(linea, cadena, ListaTokens):
             return 0
 
 def reconoceUnToken (linea,cadena,ListaTokens):
+    lisIgnora = ['[', ']']
     TokensUnSoloCarac={
         "(":"LEFT_PAREN",
         ")":"RIGHT_PAREN",
@@ -334,8 +335,12 @@ def reconoceUnToken (linea,cadena,ListaTokens):
                 ListaTokens.append(i)
                 ListaTokens.append("")
             else:
-                automataOperadores(linea,cadena[cont:len(cadena)],ListaTokens)
-                return 0
+                if i in lisIgnora: #Detecta error en los caracteres que no maneja el automata
+                    cont = cont + 1
+                    print(f'Error en linea {linea}')
+                else:
+                    automataOperadores(linea,cadena[cont:len(cadena)],ListaTokens)
+                    return 0
             
     if cadena[cont:len(cadena)]:
         automataOperadores(linea,cadena[cont:len(cadena)],ListaTokens)
@@ -346,8 +351,8 @@ def reconoceUnToken (linea,cadena,ListaTokens):
 
 
 def automataNumeros (linea,cadena,ListaTokens):
-    alfa=["1","2","3","4","5","6","7","8","9"]
-    TC=["0",["1","2","3","4","5","6","7","8","9","0"],"15"],
+    alfa=["1","2","3","4","5","6","7","8","9", ".", "+", "-", "E"]
+    TC=[["0",["1","2","3","4","5","6","7","8","9","0"],"15"],
     ["15",["1","2","3","4","5","6","7","8","9","0"],"15"],
     ["15",["."],"16"],
     ["15",["E"],"18"],
@@ -355,18 +360,17 @@ def automataNumeros (linea,cadena,ListaTokens):
     ["17",["1","2","3","4","5","6","7","8","9","0"],"17"],
     ["17",["E"],"18"],
     ["18",["+","-"],"19"],
+    ["19",["1","2","3","4","5","6","7","8","9","0"],"20"],
     ["18",["1","2","3","4","5","6","7","8","9","0"],"20"],
-    ["18",["1","2","3","4","5","6","7","8","9","0"],"20"],
-    ["20",["1","2","3","4","5","6","7","8","9","0"],"20"]
+    ["20",["1","2","3","4","5","6","7","8","9","0"],"20"]]
     EI="0"
     EA=EI
     EF=["15","17","20"]
-    b =True
     cont=0
     lex=""
 
     for caracter in cadena:
-        if caracter == " ":
+        if caracter == ' ':
             cont = cont + 1
         else:
             if caracter in alfa:
@@ -376,11 +380,10 @@ def automataNumeros (linea,cadena,ListaTokens):
                         cont=cont+1
                         for f in TC:
                             if caracter in f[1] and EA in f[0]:
-                                TC.append([EA,caracter,f[2]])
                                 EA=f[2]
                                 break
                     else:
-                        if lex != " ":
+                        if lex != '':
                             ListaTokens.append("NUMBER")
                             ListaTokens.append(lex)
                             num=float(lex)
@@ -391,13 +394,32 @@ def automataNumeros (linea,cadena,ListaTokens):
                             reconoceUnToken(linea,cadena[cont:len(cadena)], ListaTokens)
                             return 0
                 else:
-                    lex=lex+caracter
-                    cont=cont+1
-                    for f in TC:
-                        if caracter in f[1] and EA in f[0]:
-                            TC.append([EA,caracter,f[2]])
-                            EA=f[2]
-                            break
+                    if caracter == '.':
+                        if EA == '15':
+                            lex = lex + caracter
+                            cont = cont + 1
+                            for f in TC:
+                                if caracter in f[1] and EA in f[0]:
+                                    EA = f[2]
+                                    break
+                        else:
+                            if lex != '':
+                                ListaTokens.append('NUMBER')
+                                ListaTokens.append(lex)
+                                num = float(lex)
+                                ListaTokens.append(num)
+                                reconoceUnToken(linea, cadena[cont:len(cadena)], ListaTokens)
+                                return 0
+                            else:
+                                reconoceUnToken(linea, cadena[cont:len(cadena)], ListaTokens)
+                                return 0
+                    else:
+                        lex=lex+caracter
+                        cont=cont+1
+                        for f in TC:
+                            if caracter in f[1] and EA in f[0]:
+                                EA=f[2]
+                                break
 
             else: #POR SI NO ESTA EN EL ALFABETO
                 if EA in EF:
@@ -412,10 +434,12 @@ def automataNumeros (linea,cadena,ListaTokens):
                         reconoceUnToken(linea,cadena[cont:len(cadena)],ListaTokens)
                         return 0
                 else: #Por si no encuentra ningun numero
-                    if cadena [cont:len(cadena)]:
-                        reconoceUnToken(linea,cadena[cont:len(cadena)],ListaTokens)
+                    if lex != '':
+                        print(f'ERROR en linea {linea}')
+                        reconoceUnToken(linea, cadena[cont:len(cadena)], ListaTokens)
                         return 0
                     else:
+                        reconoceUnToken(linea, cadena[cont:len(cadena)], ListaTokens)
                         return 0
 
     if EA in EF:
@@ -472,7 +496,6 @@ def automataComentarios(linea, cadena, ListaTokens):
                         if caracter == '\n':
                             linea = linea + 1
                             cont = cont + 1
-
                             if EA == '0':
                                 automataComentarios(linea, cadena[cont:len(cadena)], ListaTokens)
                                 return 0
@@ -516,12 +539,11 @@ def automataComentarios(linea, cadena, ListaTokens):
                                         else:
                                             return 0
 
-        else:
+        else: #Termina la recursividad
             return 0
 
     if EA in EF:
-        print(EA)
-        if EA == '27':
+        if EA == '26':
             ListaTokens.append('SLASH')
             ListaTokens.append('/')
             ListaTokens.append('')
