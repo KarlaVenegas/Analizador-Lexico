@@ -1,3 +1,8 @@
+'''Práctica 1. Compiladores
+Cadenas Acevedo Jesús Alejandro
+Samano Resendiz Jesua Issac
+Venegas Mariano Karla '''
+
 import argparse
 from calendar import c
 from math import e
@@ -30,7 +35,7 @@ def automataCadenas(linea , cadena, ListaTokens):
                         cont = cont + 1
                         print(f'ERROR en linea {linea}')
                         if cadena[cont:len(cadena)]:
-                            automataComentarios(linea, cadena[cont:len(cadena)], ListaTokens)
+                            automataComentarios(linea+1, cadena[cont:len(cadena)], ListaTokens)
                             return 0
                         else:
                             return 0
@@ -325,7 +330,7 @@ def reconoceUnToken (linea,cadena,ListaTokens):
 
     cont=0
     for i in cadena:
-        if i == " ":
+        if i == ' ':
             cont= cont + 1
         else:
             if i in TokensUnSoloCarac:
@@ -351,7 +356,7 @@ def reconoceUnToken (linea,cadena,ListaTokens):
 
 
 def automataNumeros (linea,cadena,ListaTokens):
-    alfa=["1","2","3","4","5","6","7","8","9", ".", "+", "-", "E"]
+    alfa=["1","2","3","4","5","6","7","8","9", "0", ".", "+", "-", "E"]
     TC=[["0",["1","2","3","4","5","6","7","8","9","0"],"15"],
     ["15",["1","2","3","4","5","6","7","8","9","0"],"15"],
     ["15",["."],"16"],
