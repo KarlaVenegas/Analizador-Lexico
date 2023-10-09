@@ -611,6 +611,7 @@ def main():
 
             for i in range(0, len(ListaTokens), 3):
                 grupo = ListaTokens[i:i + 3]
+                print(grupo)
 
 
 if __name__ == "__main__":
