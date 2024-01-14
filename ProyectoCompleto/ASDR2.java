@@ -108,8 +108,6 @@ public class  ASDR2 implements Parser{
 
     private Statement STATEMENT(){
         Statement st;
-       
-       
         
         if(preanalisis.tipo == TipoToken.BANG || preanalisis.tipo == TipoToken.MINUS || preanalisis.tipo == TipoToken.TRUE || preanalisis.tipo == TipoToken.FALSE || preanalisis.tipo == TipoToken.NULL || preanalisis.tipo == TipoToken.NUMBER || preanalisis.tipo == TipoToken.STRING || preanalisis.tipo == TipoToken.IDENTIFIER || preanalisis.tipo == TipoToken.LEFT_PAREN){
             st = EXPR_STMT();
@@ -144,7 +142,7 @@ public class  ASDR2 implements Parser{
         
     }
 
-    // EXPR_STMT -> EXPRESSION ;     DUDAAAA
+    // EXPR_STMT -> EXPRESSION ;   
     private Statement EXPR_STMT(){
             Expression expr = EXPRESSION();
             match(TipoToken.SEMICOLON);
@@ -152,8 +150,7 @@ public class  ASDR2 implements Parser{
             return st;
     }
 
-    // FOR_STMT -> for ( FOR_STMT_1 FOR_STMT_2 FOR_STMT_3 ) STATEMENT for(var a = 1; a<10;)
-    // DUDOTAAATATATATATATA
+    // FOR_STMT
     private Statement FOR_STMT(){
             match(TipoToken.FOR);
             match(TipoToken.LEFT_PAREN);
@@ -179,10 +176,7 @@ public class  ASDR2 implements Parser{
             return body;
     }
 
-    //FOR_STMT_1 -> VAR_DECL
-//              -> EXPR_STMT
-                //-> ;
-    // PREGUNTAR QUE REGRESAN ESTOS
+    //FOR_STMT_1
     private Statement FOR_STMT_1(){
 
         
