@@ -197,8 +197,7 @@ public class  ASDR2 implements Parser{
         
     }
 
-   // FOR_STMT_2 -> EXPRESSION;
-    //          -> ;           Duda si retorno un null
+   // FOR_STMT_2 
     private Expression FOR_STMT_2(){
         if(preanalisis.tipo == TipoToken.BANG || preanalisis.tipo == TipoToken.MINUS || preanalisis.tipo == TipoToken.TRUE || preanalisis.tipo == TipoToken.FALSE || preanalisis.tipo == TipoToken.NULL || preanalisis.tipo == TipoToken.NUMBER || preanalisis.tipo == TipoToken.STRING || preanalisis.tipo == TipoToken.IDENTIFIER || preanalisis.tipo == TipoToken.LEFT_PAREN){
             Expression expr = EXPRESSION();
@@ -211,8 +210,7 @@ public class  ASDR2 implements Parser{
         }
         return null;
     }
-    //FOR_STMT_3 -> EXPRESSION
-    //          -> Ɛ
+    //FOR_STMT_3
     private Expression FOR_STMT_3(){
      Expression expr = null;
 
@@ -222,7 +220,7 @@ public class  ASDR2 implements Parser{
      return expr;
     }
 
-    //IF_STMT -> if (EXPRESSION) STATEMENT ELSE_STATEMENT
+    //IF_STMT 
     private Statement IF_STMT(){
 
             match(TipoToken.IF);
@@ -237,7 +235,6 @@ public class  ASDR2 implements Parser{
     }
 
     //ELSE_STATEMENT -> else STATEMENT
-    //                -> Ɛ     DUUUUUUDAAAA AQUIII MEROOOOOOO
     private Statement ELSE_STATEMENT(){
         if(preanalisis.tipo == TipoToken.ELSE){
             match(TipoToken.ELSE);
@@ -254,8 +251,8 @@ public class  ASDR2 implements Parser{
         match(TipoToken.SEMICOLON);
         return new StmtPrint(expr);
     }
+    
     // RETURN_STMT -> return RETURN_EXP_OPC ;
-
     private Statement RETURN_STMT(){
         match(TipoToken.RETURN);
         Expression expr = RETURN_EXP_OPC();
@@ -263,7 +260,6 @@ public class  ASDR2 implements Parser{
         return new StmtReturn(expr);
     }
     // RETURN_EXP_OPC -> EXPRESSION
-    //                  -> Ɛ
     private Expression RETURN_EXP_OPC(){
         Expression expr = null;
 
