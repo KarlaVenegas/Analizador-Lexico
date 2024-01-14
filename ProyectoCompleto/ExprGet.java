@@ -1,6 +1,3 @@
-package mx.ipn.escom.k.parser;
-
-import mx.ipn.escom.k.tools.Token;
 
 public class ExprGet extends Expression{
     final Expression object;
@@ -9,5 +6,8 @@ public class ExprGet extends Expression{
     ExprGet(Expression object, Token name) {
         this.object = object;
         this.name = name;
+    }
+    public Object solve(TablaSimbolos t){
+        return null;
     }
 }
