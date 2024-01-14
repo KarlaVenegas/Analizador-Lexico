@@ -501,6 +501,44 @@ public class  ASDR2 implements Parser{
         return expr;
     }
 
+    // UNARY -> ! UNARY
+    //       -> - UNARY
+    //       -> CALL
+    private Expression UNARY(){
+
+        if(preanalisis.tipo == TipoToken.BANG){
+            match(TipoToken.BANG);
+            Token operador = previous();
+            Expression expr = UNARY();
+            return new ExprUnary(operador, expr);
+        }
+        else
+            return CALL();
+
+    }
+
+    // CALL -> PRIMARY CALL_2
+    private Expression CALL(){
+        Expression expr = PRIMARY();
+        expr = CALL_2(expr);
+        return expr;
+    }
+
+    // CALL_2 -> ( ARGUMENTS_OPC )
+    //        -> Ɛ
+    private Expression CALL_2(Expression expr){
+
+        if(preanalisis.tipo == TipoToken.LEFT_PAREN){
+            match(TipoToken.LEFT_PAREN);
+            List<Expression> lstArguments = ARGUMENTS_OPC();
+            match(TipoToken.RIGHT_PAREN);
+            Expression exprCall = new ExprCallFunction(expr, lstArguments);
+            return CALL_2(exprCall);
+        }
+        return expr;
+    }
+    
+
 
 
 //---------------------------------
