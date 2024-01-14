@@ -292,6 +292,41 @@ public class  ASDR2 implements Parser{
 
 
     }
+    //Aqui empiezan las expresiones
+    
+    // EXPRESSION -> ASSIGNMENT
+    private Expression EXPRESSION(){
+        Expression expr = ASSIGNMENT();
+        return expr;
+
+    }
+
+    // ASSIGNMENT -> LOGIC_OR ASSIGNMENT_OPC
+    // AAAAAAAAAAAAAAA DUDAAAAAAAA
+    private Expression ASSIGNMENT(){
+        Expression expr = LOGIC_OR();
+        expr = ASSIGNMENT_OPC(expr);
+        return expr;
+
+
+    }
+
+   // ASSIGNMENT_OPC -> = EXPRESSION    ExprAssign
+//                  -> Ɛ
+    private Expression ASSIGNMENT_OPC(Expression expr){
+
+        if(preanalisis.tipo == TipoToken.EQUAL){
+            match(TipoToken.EQUAL);
+            Expression value = EXPRESSION();
+
+            if(expr instanceof ExprVariable){
+                Token name = ((ExprVariable) expr).name;
+                return new ExprAssign(name, value);
+            }
+        }
+        return expr;
+    }
+
 //---------------------------------
     private void match(TipoToken tt){
         if(preanalisis.tipo == tt){
