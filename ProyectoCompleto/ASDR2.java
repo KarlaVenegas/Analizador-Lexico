@@ -7,7 +7,7 @@ public class  ASDR2 implements Parser{
     private boolean hayErrores = false;
     private Token preanalisis;
     private final List<Token> tokens;
-
+    //contador para ver si hubo algún error
     private int cont = 0;
 
     public ASDR2(List<Token> tokens){
@@ -43,11 +43,23 @@ public class  ASDR2 implements Parser{
     }
 
     // PROGRAM -> DECLARATION
-    private void PROGRAM(ArrayList<Statement> statements){
-        
+    private void PROGRAM(ArrayList<Statement> statements){        
+       DECLARATION(statements);
+    }
 
-        DECLARATION(statements);
-       
+    private void DECLARATION(ArrayList<Statement> statements){
+        if(preanalisis.tipo == TipoToken.FUN){
+            statements.add(FUN_DECL()); //agregar lo que cache
+            DECLARATION( statements);
+        }
+        else if(preanalisis.tipo == TipoToken.VAR){
+            statements.add(VAR_DECL());
+            DECLARATION(statements);
+        }
+        else if(preanalisis.tipo == TipoToken.BANG || preanalisis.tipo == TipoToken.MINUS || preanalisis.tipo == TipoToken.TRUE || preanalisis.tipo == TipoToken.FALSE || preanalisis.tipo == TipoToken.NULL || preanalisis.tipo == TipoToken.NUMBER || preanalisis.tipo == TipoToken.STRING || preanalisis.tipo == TipoToken.IDENTIFIER || preanalisis.tipo == TipoToken.LEFT_PAREN || preanalisis.tipo == TipoToken.FOR || preanalisis.tipo == TipoToken.IF || preanalisis.tipo == TipoToken.PRINT || preanalisis.tipo == TipoToken.RETURN || preanalisis.tipo == TipoToken.WHILE || preanalisis.tipo == TipoToken.LEFT_BRACE){
+            statements.add(STATEMENT());
+            DECLARATION(statements);
+        }
     }
 
     
