@@ -96,8 +96,9 @@ public class  ASDR2 implements Parser{
      }
 
     
-
-
+//Aqui empiezan los Statement(Sentencias)
+    
+//---------------------------------
     private void match(TipoToken tt){
         if(preanalisis.tipo == tt){
             i++;
