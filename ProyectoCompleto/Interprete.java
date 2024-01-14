@@ -60,7 +60,7 @@ public class Interprete {
 
             Parser parser = new ASDR2(tokens);
             List<Statement> st = parser.parse();
-            
+            //System.out.println(st.toString()); // el toString es para que no imprima cosas raras
 
             AnalizadorSemantico an = new AnalizadorSemantico(st);
             an.proceso();
