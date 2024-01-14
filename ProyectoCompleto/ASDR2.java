@@ -512,6 +512,12 @@ public class  ASDR2 implements Parser{
             Expression expr = UNARY();
             return new ExprUnary(operador, expr);
         }
+        else if(preanalisis.tipo == TipoToken.MINUS){
+            match(TipoToken.MINUS);
+            Token operador = previous();
+            Expression expr = UNARY();
+            return new ExprUnary(operador, expr);
+        }
         else
             return CALL();
 
