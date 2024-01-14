@@ -375,6 +375,83 @@ public class  ASDR2 implements Parser{
         return expr;
 
     }
+
+    // EQUALITY_2 -> != COMPARISON EQUALITY_2   exprLogical
+//             -> == COMPARISON EQUALITY_2
+//              -> Ɛ
+
+    private Expression EQUALITY_2(Expression expr){
+        if(preanalisis.tipo == TipoToken.BANG_EQUAL){
+            match(TipoToken.BANG_EQUAL);
+            Token operador = previous();
+            Expression expr2 = COMPARASION();
+            ExprLogical expl = new ExprLogical(expr, operador, expr2);
+            return EQUALITY_2(expl);
+        }
+        else if(preanalisis.tipo == TipoToken.EQUAL_EQUAL){
+            match(TipoToken.EQUAL_EQUAL);
+            Token operador = previous();
+            Expression expr2 = COMPARASION();
+            ExprLogical expl = new ExprLogical(expr, operador, expr2);
+            return EQUALITY_2(expl);
+        }
+        return expr;
+    }
+// COMPARISON -> TERM COMPARISON_2
+
+    private Expression COMPARASION(){
+        Expression expr = TERM();
+        expr = COMPARASION_2(expr);
+        return expr;
+
+    }
+
+//    COMPARISON_2 -> > TERM COMPARISON_2         ExprLogical
+//                  -> >= TERM COMPARISON_2
+//                  -> < TERM COMPARISON_2
+//                  -> <= TERM COMPARISON_2
+//                  -> Ɛ
+    private Expression COMPARASION_2(Expression expr){
+
+        if(preanalisis.tipo == TipoToken.GREATER) {
+            match(TipoToken.GREATER);
+            Token operador = previous();
+            Expression expr2 = TERM();
+            ExprBinary expl = new ExprBinary(expr, operador, expr2);
+            return COMPARASION_2(expl);
+        }
+        else if(preanalisis.tipo == TipoToken.GREATER_EQUAL){
+            match(TipoToken.GREATER_EQUAL);
+            Token operador = previous();
+            Expression expr2 = TERM();
+            ExprBinary expl = new ExprBinary(expr, operador, expr2);
+            return COMPARASION_2(expl);
+        }
+        else if(preanalisis.tipo == TipoToken.LESS){
+            match(TipoToken.LESS);
+            Token operador = previous();
+            Expression expr2 = TERM();
+            ExprBinary expl = new ExprBinary(expr, operador, expr2);
+            return COMPARASION_2(expl);
+        }
+        else if(preanalisis.tipo == TipoToken.LESS_EQUAL){
+            match(TipoToken.LESS_EQUAL);
+            Token operador = previous();
+            Expression expr2 = TERM();
+            ExprBinary expl = new ExprBinary(expr, operador, expr2);
+            return COMPARASION_2(expl);
+        }
+        return expr;
+    }
+
+    // TERM -> FACTOR TERM_2
+    private Expression TERM(){
+        Expression expr = FACTOR();
+        expr = TERM_2(expr);
+        return expr;
+
+    }
+
 //---------------------------------
     private void match(TipoToken tt){
         if(preanalisis.tipo == tt){
