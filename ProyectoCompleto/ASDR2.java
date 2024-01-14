@@ -310,8 +310,8 @@ public class  ASDR2 implements Parser{
 
     }
 
-   // ASSIGNMENT_OPC -> = EXPRESSION    ExprAssign
-//                  -> Ɛ
+    // ASSIGNMENT_OPC -> = EXPRESSION    ExprAssign
+    //                -> Ɛ
     private Expression ASSIGNMENT_OPC(Expression expr){
 
         if(preanalisis.tipo == TipoToken.EQUAL){
@@ -335,8 +335,8 @@ public class  ASDR2 implements Parser{
 
     }
 
- //   LOGIC_OR_2 -> or LOGIC_AND LOGIC_OR_2
-//                  -> Ɛ
+    //   LOGIC_OR_2 -> or LOGIC_AND LOGIC_OR_2
+    //              -> Ɛ
     private Expression LOGIC_OR_2(Expression expr){
         if(preanalisis.tipo == TipoToken.OR){
             match(TipoToken.OR);
@@ -356,7 +356,7 @@ public class  ASDR2 implements Parser{
     }
 
  //   LOGIC_AND_2 -> and EQUALITY LOGIC_AND_2
- //                -> Ɛ
+ //               -> Ɛ
     private Expression LOGIC_AND_2(Expression expr){
         if(preanalisis.tipo == TipoToken.AND){
             match(TipoToken.AND);
@@ -377,8 +377,8 @@ public class  ASDR2 implements Parser{
     }
 
     // EQUALITY_2 -> != COMPARISON EQUALITY_2   exprLogical
-//             -> == COMPARISON EQUALITY_2
-//              -> Ɛ
+    //            -> == COMPARISON EQUALITY_2
+    //            -> Ɛ
 
     private Expression EQUALITY_2(Expression expr){
         if(preanalisis.tipo == TipoToken.BANG_EQUAL){
@@ -629,6 +629,48 @@ public class  ASDR2 implements Parser{
             PARAMETERS_2(parameters);
             return parameters;
 
+    }
+
+    // PARAMETERS_2 -> , id PARAMETERS_2
+    //              -> Ɛ
+    private List<Token> PARAMETERS_2(List<Token> parameters){
+
+
+        if(preanalisis.tipo == TipoToken.COMMA){
+            match(TipoToken.COMMA);
+            match(TipoToken.IDENTIFIER);
+            parameters.add(previous());
+            PARAMETERS_2(parameters);
+        }
+        return null;
+    }
+
+    // ARGUMENTS_OPC -> EXPRESSION ARGUMENTS
+    //               -> Ɛ
+    private List<Expression> ARGUMENTS_OPC(){
+
+
+        if(preanalisis.tipo == TipoToken.BANG || preanalisis.tipo == TipoToken.MINUS || preanalisis.tipo == TipoToken.TRUE || preanalisis.tipo == TipoToken.FALSE || preanalisis.tipo == TipoToken.NULL || preanalisis.tipo == TipoToken.NUMBER || preanalisis.tipo == TipoToken.STRING || preanalisis.tipo == TipoToken.IDENTIFIER || preanalisis.tipo == TipoToken.LEFT_PAREN ) {
+            Expression expr = EXPRESSION();
+            List<Expression> lst = new ArrayList<>();
+            lst.add(expr);
+            ARGUMENTS(lst);
+            return lst;
+        }
+        return null;
+    }
+
+    //ARGUMENTS -> , EXPRESSION ARGUMENTS
+    //          -> Ɛ
+    private List<Expression> ARGUMENTS(List<Expression> lst){
+
+
+        if(preanalisis.tipo == TipoToken.COMMA){
+            match(TipoToken.COMMA);
+            lst.add(EXPRESSION());
+            ARGUMENTS(lst);
+        }
+        return null;
     }
 
 
