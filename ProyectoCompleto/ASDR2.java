@@ -301,8 +301,7 @@ public class  ASDR2 implements Parser{
 
     }
 
-    // ASSIGNMENT -> LOGIC_OR ASSIGNMENT_OPC
-    // AAAAAAAAAAAAAAA DUDAAAAAAAA
+    // ASSIGNMENT -> LOGIC_OR ASSIGNMENT_OP
     private Expression ASSIGNMENT(){
         Expression expr = LOGIC_OR();
         expr = ASSIGNMENT_OPC(expr);
@@ -327,6 +326,55 @@ public class  ASDR2 implements Parser{
         return expr;
     }
 
+    
+    //LOGIC_OR -> LOGIC_AND LOGIC_OR_2
+    private Expression LOGIC_OR(){
+        Expression expr = LOGIC_AND();
+        expr = LOGIC_OR_2(expr);
+        return expr;
+
+    }
+
+ //   LOGIC_OR_2 -> or LOGIC_AND LOGIC_OR_2
+//                  -> Ɛ
+    private Expression LOGIC_OR_2(Expression expr){
+        if(preanalisis.tipo == TipoToken.OR){
+            match(TipoToken.OR);
+            Token operador = previous();
+            Expression expr2 = LOGIC_AND();
+            ExprLogical expl = new ExprLogical(expr, operador, expr2);
+            return LOGIC_OR_2(expl);
+        }
+        return expr;
+    }
+// LOGIC_AND -> EQUALITY LOGIC_AND_2
+    private Expression LOGIC_AND(){
+        Expression expr = EQUALITY();
+        expr = LOGIC_AND_2(expr);
+        return expr;
+
+    }
+
+ //   LOGIC_AND_2 -> and EQUALITY LOGIC_AND_2
+ //                -> Ɛ
+    private Expression LOGIC_AND_2(Expression expr){
+        if(preanalisis.tipo == TipoToken.AND){
+            match(TipoToken.AND);
+            Token operador = previous();
+            Expression expr2 = EQUALITY();
+            ExprLogical expl = new ExprLogical(expr, operador, expr2);
+            return LOGIC_AND_2(expl);
+        }
+        return expr;
+    }
+
+    // EQUALITY -> COMPARISON EQUALITY_2
+    private Expression EQUALITY(){
+        Expression expr = COMPARASION();
+        expr = EQUALITY_2(expr);
+        return expr;
+
+    }
 //---------------------------------
     private void match(TipoToken tt){
         if(preanalisis.tipo == tt){
