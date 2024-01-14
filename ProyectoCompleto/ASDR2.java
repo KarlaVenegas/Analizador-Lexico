@@ -543,8 +543,93 @@ public class  ASDR2 implements Parser{
         }
         return expr;
     }
-    
 
+    // PRIMARY -> true
+    //         -> false
+    //         -> null
+    //         -> number
+    //         -> string
+    //         -> id
+    //         -> ( EXPRESSION )
+    private Expression  PRIMARY(){
+        if(preanalisis.tipo == TipoToken.TRUE){
+            match(TipoToken.TRUE);
+            return new ExprLiteral(true, TipoToken.BOOL, previous().lexema);
+        }
+        else if(preanalisis.tipo == TipoToken.FALSE){
+            match(TipoToken.FALSE);
+            return new ExprLiteral(false, TipoToken.BOOL, previous().lexema);
+        }
+        else if(preanalisis.tipo == TipoToken.NULL){
+            match(TipoToken.NULL);
+            return new ExprLiteral(null, TipoToken.NULL, previous().lexema);
+        }
+        else if(preanalisis.tipo == TipoToken.NUMBER){
+            match(TipoToken.NUMBER);
+            Token numero = previous();
+            return new ExprLiteral(numero.literal, numero.tipo, numero.lexema);
+        }
+        else if(preanalisis.tipo == TipoToken.STRING){
+            match(TipoToken.STRING);
+            Token cadena = previous();
+            return new ExprLiteral(cadena.literal, cadena.tipo, cadena.lexema);
+        }
+        else if(preanalisis.tipo == TipoToken.IDENTIFIER){
+            match(TipoToken.IDENTIFIER);
+            Token id = previous();
+            return new ExprVariable(id);
+        }
+        else if(preanalisis.tipo == TipoToken.LEFT_PAREN){
+            match(TipoToken.LEFT_PAREN);
+            Expression expr = EXPRESSION();
+            match(TipoToken.RIGHT_PAREN);
+            return new ExprGrouping(expr);
+        }
+        else{
+
+            match(TipoToken.INVAL);
+            return null;
+        }
+    }
+
+    //Otras funciones
+
+    // FUNCTION -> id ( PARAMETERS_OPC ) BLOCK
+    private Statement FUNCTION(){
+
+
+            match(TipoToken.IDENTIFIER);
+            Token name = previous();
+            match(TipoToken.LEFT_PAREN);
+            List<Token> param = PARAMETERS_OPC();
+            match(TipoToken.RIGHT_PAREN);
+            StmtBlock body = BLOCK();
+            return new StmtFunction(name, param, body);
+
+    }
+
+    // PARAMETERS_OPC -> PARAMETERS
+    //                -> Ɛ
+
+    private List<Token> PARAMETERS_OPC(){
+
+        if(preanalisis.tipo == TipoToken.IDENTIFIER){
+            return PARAMETERS();
+        }
+        return null;
+    }
+
+    // PARAMETERS -> id PARAMETERS_2
+    private List<Token> PARAMETERS(){
+
+
+            List<Token> parameters = new ArrayList<>();
+            match(TipoToken.IDENTIFIER);
+            parameters.add(previous());
+            PARAMETERS_2(parameters);
+            return parameters;
+
+    }
 
 
 //---------------------------------
