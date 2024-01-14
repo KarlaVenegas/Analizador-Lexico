@@ -62,6 +62,39 @@ public class  ASDR2 implements Parser{
         }
     }
 
+// FUN_DECL -> fun FUNCTION
+    private Statement FUN_DECL(){
+        if(preanalisis.tipo == TipoToken.FUN){
+            match(TipoToken.FUN);
+            Statement st = FUNCTION();
+            return st;
+        }
+        return null;
+
+    }
+
+    // VAR_DECL -> var id VAR_INIT ;
+    private Statement VAR_DECL(){
+        match(TipoToken.VAR);
+        match(TipoToken.IDENTIFIER);
+        Token name = previous();
+        Expression expr = VAR_INIT();
+        match(TipoToken.SEMICOLON);
+        return new StmtVar(name, expr);
+    }
+
+    //VAR_INIT -> = EXPRESSION
+    //         -> Ɛ
+    private Expression VAR_INIT(){
+        Expression expr = null;
+         if(preanalisis.tipo == TipoToken.EQUAL){
+             match(TipoToken.EQUAL);
+             expr = EXPRESSION();
+             return expr;
+         }
+         return expr;
+     }
+
     
 
 
