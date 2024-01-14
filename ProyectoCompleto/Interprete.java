@@ -62,6 +62,9 @@ public class Interprete {
             List<Statement> st = parser.parse();
             
 
+            AnalizadorSemantico an = new AnalizadorSemantico(st);
+            an.proceso();
+
         }
         catch (Exception ex){
             ex.printStackTrace();
