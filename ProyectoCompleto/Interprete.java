@@ -56,7 +56,11 @@ public class Interprete {
             
             for(Token token : tokens){
                 System.out.println(token);
-            }
+            } //Comentado para el ASDR
+
+            Parser parser = new ASDR2(tokens);
+            List<Statement> st = parser.parse();
+            
 
         }
         catch (Exception ex){
