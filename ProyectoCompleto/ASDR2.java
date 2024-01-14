@@ -452,6 +452,57 @@ public class  ASDR2 implements Parser{
 
     }
 
+    // TERM_2 -> - FACTOR TERM_2
+    //        -> + FACTOR TERM_2
+    //        -> Ɛ
+    private Expression TERM_2(Expression expr){
+        if(preanalisis.tipo == TipoToken.MINUS){
+            match(TipoToken.MINUS);
+            Token operador = previous();
+            Expression expr2 = FACTOR();
+            ExprBinary expb = new ExprBinary(expr, operador, expr2);
+            return TERM_2(expb);
+        }
+        else if(preanalisis.tipo == TipoToken.PLUS){
+            match(TipoToken.PLUS);
+            Token operador = previous();
+            Expression expr2 = FACTOR();
+            ExprBinary expb = new ExprBinary(expr, operador, expr2);
+            return TERM_2(expb);
+        }
+        return expr;
+    }
+
+    // FACTOR -> UNARY FACTOR_2
+    private Expression FACTOR(){
+        Expression expr = UNARY();
+        expr = FACTOR_2(expr);
+        return expr;
+    }
+
+    // FACTOR_2 -> / UNARY FACTOR_2
+    //          -> * UNARY FACTOR_2
+    //          -> Ɛ
+    private Expression FACTOR_2(Expression expr){
+        if(preanalisis.tipo == TipoToken.SLASH){
+            match(TipoToken.SLASH);
+            Token operador = previous();
+            Expression expr2 = UNARY();
+            ExprBinary expb = new ExprBinary(expr, operador, expr2);
+            return FACTOR_2(expb);
+        }
+        else if(preanalisis.tipo == TipoToken.STAR){
+            match(TipoToken.STAR);
+            Token operador = previous();
+            Expression expr2 = UNARY();
+            ExprBinary expb = new ExprBinary(expr, operador, expr2);
+            return FACTOR_2(expb);
+        }
+        return expr;
+    }
+
+
+
 //---------------------------------
     private void match(TipoToken tt){
         if(preanalisis.tipo == tt){
