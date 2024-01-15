@@ -44,7 +44,9 @@ public class TablaSimbolos {
         }
     }
 
-
+    int tamano(){
+        return values.size();
+    }
 
     void asignar(String identificador, Object valor){
         values.put(identificador, valor);
