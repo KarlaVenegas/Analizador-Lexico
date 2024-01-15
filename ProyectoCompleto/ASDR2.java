@@ -27,6 +27,7 @@ public class  ASDR2 implements Parser{
                 return statements;
             } else {
                 System.out.println("Error en el análisis sintáctico. ");
+                System.exit(0);
                 return statements;
             }
 

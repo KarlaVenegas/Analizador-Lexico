@@ -1,4 +1,4 @@
-package mx.ipn.escom.k.parser;
+
 
 public abstract class Statement {
     TablaSimbolos j;

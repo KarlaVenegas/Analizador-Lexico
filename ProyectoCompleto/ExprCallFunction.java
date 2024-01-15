@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class ExprCallFunction extends Expression{
@@ -21,7 +23,7 @@ public class ExprCallFunction extends Expression{
 
         Object funcion = t.obtener(nombre);
         if(!(funcion instanceof StmtFunction)){
-            // Error
+            throw new RuntimeException("No se realizó de manera correcta la llamada de la función");
         }
         else{
             for(int i=0; i<arguments.size(); i++){
@@ -42,7 +44,7 @@ public class ExprCallFunction extends Expression{
             }
 
         }
-        return null;
+       // return null;
 
 
     }

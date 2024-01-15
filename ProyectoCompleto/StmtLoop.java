@@ -1,4 +1,4 @@
-package mx.ipn.escom.k.parser;
+
 
 public class StmtLoop extends Statement {
     final Expression condition;

@@ -14,6 +14,9 @@ class ExprLiteral extends Expression {
     }
 
     public Object solve(TablaSimbolos t){
+        if(value instanceof Number){
+            return ((Number)value).doubleValue();
+        }
         return value;
     }
 }

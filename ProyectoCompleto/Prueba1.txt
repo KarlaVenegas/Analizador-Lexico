@@ -1,0 +1,11 @@
+// Prueba 1:
+
+var restar = 3;
+fun sumar(b, c){
+
+return b + c;
+}
+print restar(3, 4);
+
+
+
