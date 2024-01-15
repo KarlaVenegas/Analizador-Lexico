@@ -68,45 +68,7 @@ public class TablaSimbolos {
         }
     }
 
-    boolean sonValoresIguales() {
-        // Obtener el primer valor del HashMap
-        Object primerValor = null;
-        String aux = null, aux2;
-
-
-
-        for (Object valor : values.values()) {
-            primerValor = valor;
-            if(primerValor instanceof Number){
-                aux = "NUMBER";
-            }
-            else if(primerValor instanceof String){
-                aux= "STRING";
-            }
-            else
-                aux = "a";
-
-            break;
-        }
-
-        // Verificar si todos los valores son iguales al primer valor
-        for (Object valor : values.values()) {
-            if(valor instanceof Number){
-                aux2 = "NUMBER";
-            }
-            else if(valor instanceof String){
-                aux2= "STRING";
-            }
-            else
-                aux2 = "a";
-
-            if (aux!=aux2) {
-                return false; // Se encontró un valor diferente
-            }
-        }
-
-        return true; // Todos los valores son iguales
-    }
+    
 
 
 }
