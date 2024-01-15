@@ -14,4 +14,7 @@ public class StmtClass extends Statement {
         this.superclass = superclass;
         this.methods = methods;
     }
+        public Object exect(TablaSimbolos t){
+        return null;
+    }	
 }
