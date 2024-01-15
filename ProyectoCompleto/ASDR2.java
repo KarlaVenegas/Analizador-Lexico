@@ -22,7 +22,7 @@ public class  ASDR2 implements Parser{
 
             PROGRAM(statements);
             if(preanalisis.tipo == TipoToken.EOF && cont == 0){
-                System.out.println("Análisis sintáctico exitoso.");
+               // System.out.println("Análisis sintáctico exitoso.");
 
                 return statements;
             } else {

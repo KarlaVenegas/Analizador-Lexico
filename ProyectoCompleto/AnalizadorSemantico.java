@@ -12,7 +12,7 @@ public class AnalizadorSemantico {
 
         List<Statement> Funciones = new ArrayList<>();
        // System.out.println(st.get(0).toString());
-       // System.out.println(st.toString());
+        //System.out.println(st.toString());
 
         TablaSimbolos general = new TablaSimbolos();
 
