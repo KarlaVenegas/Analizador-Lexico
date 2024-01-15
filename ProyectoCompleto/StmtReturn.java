@@ -6,4 +6,12 @@ public class StmtReturn extends Statement {
     StmtReturn(Expression value) {
         this.value = value;
     }
+        public String toString() {
+        return "StmtReturn['" + value +  ']';
+    }
+    public Object exect(TablaSimbolos t){
+         return value.solve(t);
+
+
+    }
 }
