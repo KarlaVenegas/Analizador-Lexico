@@ -1,6 +1,3 @@
-package mx.ipn.escom.k.parser;
-
-import mx.ipn.escom.k.tools.Token;
 
 public class ExprSuper extends Expression {
     // final Token keyword;
@@ -9,5 +6,8 @@ public class ExprSuper extends Expression {
     ExprSuper(Token method) {
         // this.keyword = keyword;
         this.method = method;
+    }
+    public Object solve(TablaSimbolos t){
+        return null;
     }
 }
