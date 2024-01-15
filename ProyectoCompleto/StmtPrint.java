@@ -6,4 +6,11 @@ public class StmtPrint extends Statement {
     StmtPrint(Expression expression) {
         this.expression = expression;
     }
+        public String toString() {
+        return "StmtPrint['" + expression + ']';
+    }
+    public Object exect(TablaSimbolos t){
+        System.out.println(expression.solve(t));
+        return null;
+    }
 }
