@@ -10,4 +10,31 @@ public class StmtIf extends Statement {
         this.thenBranch = thenBranch;
         this.elseBranch = elseBranch;
     }
+    public String toString() {
+        return "StmtIf['" + condition + thenBranch + elseBranch + ']';
+    }
+    public Object exect(TablaSimbolos t){
+        if(condition.solve(t) instanceof Boolean){
+            if((Boolean) condition.solve(t)){
+
+                thenBranch.exect(t);
+            }
+            else{
+                if(elseBranch!=null){
+                    elseBranch.exect(t);
+                }
+
+            }
+
+
+
+
+        }
+        else{
+            throw new RuntimeException("Condición inválida");
+        }
+        return null;
+
+
+    }
 }
